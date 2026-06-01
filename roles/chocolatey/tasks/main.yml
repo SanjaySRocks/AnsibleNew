@@ -1,0 +1,25 @@
+---
+# Purpose: Install Chocolatey only on Windows hosts so later Windows package tasks can use it.
+
+- name: Check if Chocolatey is already installed
+  ansible.windows.win_stat:
+    path: C:\ProgramData\chocolatey\bin\choco.exe
+  register: chocolatey_exe
+  when: ansible_os_family == 'Windows'
+
+- name: Install Chocolatey on Windows when missing
+  ansible.windows.win_powershell:
+    script: |
+      Set-ExecutionPolicy Bypass -Scope Process -Force
+      [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+      Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('{{ chocolatey_install_script_url }}'))
+  when:
+    - ansible_os_family == 'Windows'
+    - not (chocolatey_exe.stat.exists | default(false))
+
+- name: Ensure Chocolatey is available in the current session path
+  ansible.windows.win_path:
+    elements:
+      - C:\ProgramData\chocolatey\bin
+    state: present
+  when: ansible_os_family == 'Windows'

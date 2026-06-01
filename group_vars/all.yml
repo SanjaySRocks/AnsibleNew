@@ -1,0 +1,15 @@
+---
+# Purpose: Shared variables for all hosts and roles.
+
+# Package versions/channels used by the roles.
+python_linux_package: python3
+python_windows_package: python
+java_linux_package_debian: openjdk-17-jdk
+java_linux_package_redhat: java-17-openjdk-devel
+java_windows_package: openjdk17
+dotnet_sdk_version: "8.0"
+docker_linux_package: docker.io
+docker_windows_package: docker-desktop
+
+# Docker Desktop installs on Windows but usually requires a reboot before first use.
+docker_windows_allow_reboot: false

@@ -1,0 +1,15 @@
+---
+# Purpose: Install Python on Linux and Windows using the native package mechanism for each OS.
+
+- name: Install Python on Linux
+  ansible.builtin.package:
+    name: "{{ python_linux_package }}"
+    state: present
+  become: true
+  when: ansible_os_family != 'Windows'
+
+- name: Install Python on Windows with Chocolatey
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ python_windows_package }}"
+    state: present
+  when: ansible_os_family == 'Windows'

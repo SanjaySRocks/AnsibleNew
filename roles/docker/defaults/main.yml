@@ -1,0 +1,6 @@
+---
+# Purpose: Default variables for the Docker role.
+
+docker_linux_package: docker.io
+docker_windows_package: docker-desktop
+docker_windows_allow_reboot: false

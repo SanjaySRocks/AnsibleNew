@@ -1,0 +1,15 @@
+---
+# Purpose: Single playbook that installs core developer/runtime tooling on Linux and Windows.
+# It relies on Ansible facts to detect each host OS and lets each role choose the right tasks.
+
+- name: Install common development tooling on Linux and Windows
+  hosts: all
+  gather_facts: true
+
+  roles:
+    # Chocolatey is Windows-only and must run before Windows package roles.
+    - role: chocolatey
+    - role: python
+    - role: java
+    - role: dotnet
+    - role: docker

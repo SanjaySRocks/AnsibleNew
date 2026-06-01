@@ -1,0 +1,44 @@
+---
+# Purpose: Install Docker on Linux and Docker Desktop on Windows.
+
+- name: Install Docker on Debian-family Linux
+  ansible.builtin.apt:
+    name: "{{ docker_linux_package }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+  when:
+    - ansible_os_family == 'Debian'
+
+- name: Install Docker on RedHat-family Linux
+  ansible.builtin.dnf:
+    name: docker
+    state: present
+  become: true
+  when:
+    - ansible_os_family == 'RedHat'
+
+- name: Ensure Docker service is enabled and running on Linux
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+  become: true
+  when: ansible_os_family != 'Windows'
+
+- name: Install Docker Desktop on Windows with Chocolatey
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ docker_windows_package }}"
+    state: present
+  register: docker_windows_install
+  when: ansible_os_family == 'Windows'
+
+- name: Reboot Windows if Docker Desktop requires it and reboots are enabled
+  ansible.windows.win_reboot:
+    msg: Rebooting after Docker Desktop installation.
+  when:
+    - ansible_os_family == 'Windows'
+    - docker_windows_allow_reboot | bool
+    - docker_windows_install is defined
+    - docker_windows_install is changed

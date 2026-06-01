@@ -1,0 +1,4 @@
+---
+# Purpose: Default variables for the Chocolatey role.
+
+chocolatey_install_script_url: https://community.chocolatey.org/install.ps1
