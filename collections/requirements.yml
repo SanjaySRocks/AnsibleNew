@@ -1,0 +1,5 @@
+---
+# Purpose: Declare external collections required by this project.
+collections:
+  - name: ansible.windows
+  - name: chocolatey.chocolatey

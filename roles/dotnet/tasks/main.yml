@@ -1,0 +1,33 @@
+---
+# Purpose: Install .NET SDK 8 on Linux and Windows.
+
+- name: Install Microsoft package repository on Debian-family Linux
+  ansible.builtin.apt:
+    deb: "https://packages.microsoft.com/config/{{ ansible_distribution | lower }}/{{ ansible_distribution_major_version }}/packages-microsoft-prod.deb"
+    state: present
+  become: true
+  when:
+    - ansible_os_family == 'Debian'
+
+- name: Install .NET SDK on Debian-family Linux
+  ansible.builtin.apt:
+    name: "dotnet-sdk-{{ dotnet_sdk_version }}"
+    state: present
+    update_cache: true
+  become: true
+  when:
+    - ansible_os_family == 'Debian'
+
+- name: Install .NET SDK on RedHat-family Linux
+  ansible.builtin.dnf:
+    name: "dotnet-sdk-{{ dotnet_sdk_version }}"
+    state: present
+  become: true
+  when:
+    - ansible_os_family == 'RedHat'
+
+- name: Install .NET SDK on Windows with Chocolatey
+  chocolatey.chocolatey.win_chocolatey:
+    name: "dotnet-{{ dotnet_sdk_version }}-sdk"
+    state: present
+  when: ansible_os_family == 'Windows'

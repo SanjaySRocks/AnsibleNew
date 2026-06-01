@@ -1,0 +1,6 @@
+---
+# Purpose: Default variables for the Java role.
+
+java_linux_package_debian: openjdk-17-jdk
+java_linux_package_redhat: java-17-openjdk-devel
+java_windows_package: openjdk17

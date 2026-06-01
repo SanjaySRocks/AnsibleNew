@@ -1,0 +1,4 @@
+---
+# Purpose: Default variables for the .NET SDK role.
+
+dotnet_sdk_version: "8.0"

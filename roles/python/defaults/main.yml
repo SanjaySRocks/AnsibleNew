@@ -1,0 +1,5 @@
+---
+# Purpose: Default variables for the Python role.
+
+python_linux_package: python3
+python_windows_package: python

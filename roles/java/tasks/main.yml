@@ -1,0 +1,34 @@
+---
+# Purpose: Install OpenJDK 17 on Linux and Windows.
+
+- name: Install OpenJDK 17 on Debian-family Linux
+  ansible.builtin.apt:
+    name: "{{ java_linux_package_debian }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+  when:
+    - ansible_os_family == 'Debian'
+
+- name: Install OpenJDK 17 on RedHat-family Linux
+  ansible.builtin.dnf:
+    name: "{{ java_linux_package_redhat }}"
+    state: present
+  become: true
+  when:
+    - ansible_os_family == 'RedHat'
+
+- name: Install OpenJDK 17 on other Linux distributions
+  ansible.builtin.package:
+    name: "{{ java_linux_package_debian }}"
+    state: present
+  become: true
+  when:
+    - ansible_os_family not in ['Windows', 'Debian', 'RedHat']
+
+- name: Install OpenJDK 17 on Windows with Chocolatey
+  chocolatey.chocolatey.win_chocolatey:
+    name: "{{ java_windows_package }}"
+    state: present
+  when: ansible_os_family == 'Windows'
